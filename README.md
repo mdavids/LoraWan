@@ -1,2 +1,2 @@
 # LoraWan
-LoraWan Experiments
+LoRaWAN Experiments
