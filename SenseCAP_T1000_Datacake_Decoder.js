@@ -1,4 +1,4 @@
-// Version 20241030-01
+// Version 20241030-02
 // Adapted from Datacake default, with some inspiration from SenseCAP_T1000_Helium_Decoder.js
 // By M. Davids
 function Decoder(bytes, port) {
@@ -304,9 +304,6 @@ function deserialize(dataId, dataValue) {
             ];
             break;
         case '07':
-            // TODO Waarom staat evenList hier in bronversie? Ik commentarieer hem uit.
-            //eventList = getEventStatus(dataValue.substring(0, 6))
-            // TODO: de bronversie is anders, maar gaf fout, dit zijn de BLE waarden - klopt BLE dan wel of hadden ze het omgedraaid?
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
             measurementArray = [
                 { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
