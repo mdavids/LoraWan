@@ -1,4 +1,4 @@
-// Version 20241030-02
+// Version 20241030-03
 // Adapted from Datacake default, with some inspiration from SenseCAP_T1000_Helium_Decoder.js
 // By M. Davids
 function Decoder(bytes, port) {
@@ -8,6 +8,9 @@ function Decoder(bytes, port) {
     
     // Output raw payload coming from webhook of your LNS
     // console.log(JSON.stringify(rawPayload));  
+
+
+    var sosEvent = false;
 
     var bytesString = bytes2HexString(bytes).toLocaleUpperCase();
     var datacakeFields = []
@@ -49,6 +52,24 @@ function Decoder(bytes, port) {
     }
 
     // TODO fport check(s)? See SenseCAP_T1000_Helium_Decoder.js
+
+    measurement.forEach(function(item) {
+        if (item.field === "EVENT_STATUS") {
+            item.value.forEach(function(event) {
+                if (event.id === 7) {
+                    sosEvent = true;
+                }
+            });
+        }
+    });
+
+    if (sosEvent) {
+        datacakeFields.push({
+                field: "SOS_EVENT",
+                value: sosEvent,
+        });
+    } // TODO: timestamp, somehow? 
+
 
     return datacakeFields;
 }
@@ -707,6 +728,7 @@ function getEventStatus (str) {
                 break
             case 6:
                 event.push({id:7, eventName:"SOS event."})
+                sosevent = true
                 break
             case 7:
                 event.push({id:8, eventName:"Press once event."})
