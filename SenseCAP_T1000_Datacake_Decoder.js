@@ -1,19 +1,19 @@
-// Version 20241030-03
+// Version 20241030-04
 // Adapted from Datacake default, with some inspiration from SenseCAP_T1000_Helium_Decoder.js
 // By M. Davids
 function Decoder(bytes, port) {
 
     // Output normalized Payload
     // console.log(JSON.stringify(normalizedPayload,0,4));
-    
+
     // Output raw payload coming from webhook of your LNS
-    // console.log(JSON.stringify(rawPayload));  
+    // console.log(JSON.stringify(rawPayload));
 
 
     var sosEvent = false;
 
     var bytesString = bytes2HexString(bytes).toLocaleUpperCase();
-    var datacakeFields = []
+    var datacakeFields = [];
     var measurement = messageAnalyzed(bytesString);
     datacakeFields = measurement;
 
@@ -25,17 +25,17 @@ function Decoder(bytes, port) {
 
     if (Array.isArray(rawPayload)) {
         rawPayload.forEach(function(item) {
-        switch (item.n) {
-            case "latitude":
-                lat = item.v;
-                break;
-            case "longitude":
-                lon = item.v;
-                break;
-            case "locTime":
-                loctime = item.v;
-                break;
-        }
+            switch (item.n) {
+                case "latitude":
+                    lat = item.v;
+                    break;
+                case "longitude":
+                    lon = item.v;
+                    break;
+                case "locTime":
+                    loctime = item.v;
+                    break;
+            }
         });
         if (lat !== null && lon !== null) {
             var location = "(" + lat + "," + lon + ")";
@@ -48,7 +48,7 @@ function Decoder(bytes, port) {
             console.log("lon and/or lat was empty.")
         }
     } else {
-            console.log("rawPayload not available.");
+        console.log("rawPayload not available.");
     }
 
     // TODO fport check(s)? See SenseCAP_T1000_Helium_Decoder.js
@@ -65,8 +65,8 @@ function Decoder(bytes, port) {
 
     if (sosEvent) {
         datacakeFields.push({
-                field: "SOS_EVENT",
-                value: sosEvent,
+            field: "SOS_EVENT",
+            value: sosEvent,
         });
     } // TODO: timestamp, somehow? 
 
@@ -104,77 +104,88 @@ function unpack(messageValue) {
                 dataValue = remainMessage.substring(2, 94);
                 messageValue = remainMessage.substring(94);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '02':
                 dataValue = remainMessage.substring(2, 32);
                 messageValue = remainMessage.substring(32);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '03':
                 dataValue = remainMessage.substring(2, 64)
                 messageValue = remainMessage.substring(64)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '04':
                 dataValue = remainMessage.substring(2, 20);
                 messageValue = remainMessage.substring(20);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '05':
                 dataValue = remainMessage.substring(2, 10);
                 messageValue = remainMessage.substring(10);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '06':
                 dataValue = remainMessage.substring(2, 44);
                 messageValue = remainMessage.substring(44);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '07':
                 dataValue = remainMessage.substring(2, 84);
                 messageValue = remainMessage.substring(84);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '08':
                 dataValue = remainMessage.substring(2, 70);
                 messageValue = remainMessage.substring(70);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '09':
                 dataValue = remainMessage.substring(2, 36);
                 messageValue = remainMessage.substring(36);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '0A':
                 dataValue = remainMessage.substring(2, 76)
                 messageValue = remainMessage.substring(76)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '0B':
                 dataValue = remainMessage.substring(2, 62);
                 messageValue = remainMessage.substring(62);
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '0C':
@@ -183,7 +194,8 @@ function unpack(messageValue) {
                 dataValue = remainMessage.substring(2, 10)
                 messageValue = remainMessage.substring(10)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '0E':
@@ -191,56 +203,64 @@ function unpack(messageValue) {
                 dataValue = remainMessage.substring(2, 8) + remainMessage.substring(10, packageLen)
                 messageValue = remainMessage.substring(packageLen)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '0F':
                 dataValue = remainMessage.substring(2, 34)
                 messageValue = remainMessage.substring(34)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '10':
                 dataValue = remainMessage.substring(2, 26)
                 messageValue = remainMessage.substring(26)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '11':
                 dataValue = remainMessage.substring(2, 28)
                 messageValue = remainMessage.substring(28)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 };
                 break;
             case '1A':
                 dataValue = remainMessage.substring(2, 56)
                 messageValue = remainMessage.substring(56)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '1B':
                 dataValue = remainMessage.substring(2, 96)
                 messageValue = remainMessage.substring(96)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '1C':
                 dataValue = remainMessage.substring(2, 82)
                 messageValue = remainMessage.substring(82)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             case '1D':
                 dataValue = remainMessage.substring(2, 40)
                 messageValue = remainMessage.substring(40)
                 dataObj = {
-                    'dataId': dataId, 'dataValue': dataValue
+                    'dataId': dataId,
+                    'dataValue': dataValue
                 }
                 break;
             default:
@@ -295,82 +315,200 @@ function deserialize(dataId, dataValue) {
                     interval = eventInterval
                     break
             }
-            measurementArray = [
-                {field: 'WORK_MODE', value: workMode},
-                {field: 'HEARTBEAT_INTERVAL', value: heartbeatInterval},
-                {field: 'PERIODIC_INTERVAL', value: periodicInterval},
-                {field: 'EVENT_INTERVAL', value: eventInterval},
-                {field: 'SOS_MODE', value: getSOSMode(dataValue.substring(16, 18))},
-                {field: 'UPLINK_INTERVAL', value: interval}
+            measurementArray = [{
+                    field: 'WORK_MODE',
+                    value: workMode
+                },
+                {
+                    field: 'HEARTBEAT_INTERVAL',
+                    value: heartbeatInterval
+                },
+                {
+                    field: 'PERIODIC_INTERVAL',
+                    value: periodicInterval
+                },
+                {
+                    field: 'EVENT_INTERVAL',
+                    value: eventInterval
+                },
+                {
+                    field: 'SOS_MODE',
+                    value: getSOSMode(dataValue.substring(16, 18))
+                },
+                {
+                    field: 'UPLINK_INTERVAL',
+                    value: interval
+                }
             ];
             break;
         case '05':
-            measurementArray = [
-                { field: 'BATTERY', value: getBattery(dataValue.substring(0, 2)) },
-                { field: 'WORK_MODE', value: getWorkingMode(dataValue.substring(2, 4)) },
-                { field: 'POSITION_STRATEGY', value: getPositioningStrategy(dataValue.substring(4, 6)) },
-                { field: 'SOS_MODE', value: getSOSMode(dataValue.substring(6, 8)) }
+            measurementArray = [{
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(0, 2))
+                },
+                {
+                    field: 'WORK_MODE',
+                    value: getWorkingMode(dataValue.substring(2, 4))
+                },
+                {
+                    field: 'POSITION_STRATEGY',
+                    value: getPositioningStrategy(dataValue.substring(4, 6))
+                },
+                {
+                    field: 'SOS_MODE',
+                    value: getSOSMode(dataValue.substring(6, 8))
+                }
             ];
             break;
         case '06':
             // TODO SenseCAP_T1000_Helium_Decoder.js has parseFloat - do we want that here too?
             // TODO What about adding MotionID, yes or no ? Also applies to 07 .. 0B
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
-                { field: 'DEVICE_LOCATION', value: '(' + getSensorValue(dataValue.substring(24, 32), 1000000) + ',' + getSensorValue(dataValue.substring(16, 24), 1000000) + ')', timestamp: collectTime },
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(32, 36), 10), timestamp: collectTime  },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(36, 40)), timestamp: collectTime  },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(40, 42)), timestamp: collectTime  }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'DEVICE_LOCATION',
+                    value: '(' + getSensorValue(dataValue.substring(24, 32), 1000000) + ',' + getSensorValue(dataValue.substring(16, 24), 1000000) + ')',
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(32, 36), 10),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(36, 40)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(40, 42)),
+                    timestamp: collectTime
+                }
             ];
             break;
         case '07':
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
-                { field: 'WIFI_SCAN', value: getMacAndRssiObj(dataValue.substring(16, 72)), timestamp: collectTime },
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(72, 76), 10), timestamp: collectTime  },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(76, 80)), timestamp: collectTime  },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(80, 82)), timestamp: collectTime  }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'WIFI_SCAN',
+                    value: getMacAndRssiObj(dataValue.substring(16, 72)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(72, 76), 10),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(76, 80)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(80, 82)),
+                    timestamp: collectTime
+                }
             ];
             break;
         case '08':
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
-                { field: 'BLE_SCAN', value: getMacAndRssiObj(dataValue.substring(16, 58)), timestamp: collectTime },
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(58,62), 10), timestamp: collectTime  },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(62,66)), timestamp: collectTime  },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(66,68)), timestamp: collectTime  }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BLE_SCAN',
+                    value: getMacAndRssiObj(dataValue.substring(16, 58)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(58, 62), 10),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(62, 66)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(66, 68)),
+                    timestamp: collectTime
+                }
             ];
             break;
         case '09':
             // TODO Recorded measurements lijken de timestamp nog niet te snappen: "timestamp":string"invalid -> auto"
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
-                { field: 'DEVICE_LOCATION', value: '(' + getSensorValue(dataValue.substring(24, 32), 1000000) + ',' + getSensorValue(dataValue.substring(16, 24), 1000000) + ')', timestamp: collectTime },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(32, 34)), timestamp: collectTime  }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'DEVICE_LOCATION',
+                    value: '(' + getSensorValue(dataValue.substring(24, 32), 1000000) + ',' + getSensorValue(dataValue.substring(16, 24), 1000000) + ')',
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(32, 34)),
+                    timestamp: collectTime
+                }
             ];
             break;
         case '0A':
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
-                { field: 'WIFI_SCAN', value: getMacAndRssiObj(dataValue.substring(16, 72)), timestamp: collectTime },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(72, 74)), timestamp: collectTime }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'WIFI_SCAN',
+                    value: getMacAndRssiObj(dataValue.substring(16, 72)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(72, 74)),
+                    timestamp: collectTime
+                }
             ];
             break;
         case '0B':
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
-                { field: 'BLE_SCAN', value: getMacAndRssiObj(dataValue.substring(16, 58)), timestamp: collectTime },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(58,60)), timestamp: collectTime }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BLE_SCAN',
+                    value: getMacAndRssiObj(dataValue.substring(16, 58)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(58, 60)),
+                    timestamp: collectTime
+                }
             ];
             break;
         case '0C':
-                // WONTDO Also not present in SenseCAP_T1000_Helium_Decoder.js
+            // WONTDO Also not present in SenseCAP_T1000_Helium_Decoder.js
             break;
         case '0D':
             // TODO What to do with this?
@@ -387,7 +525,10 @@ function deserialize(dataId, dataValue) {
                     error = 'DOPPLER ERROR';
                     break;
             }
-            measurementArray.push({ errorCode: errorCode, error: error });
+            measurementArray.push({
+                errorCode: errorCode,
+                error: error
+            });
             break;
         case '0E':
             // TODO ?
@@ -400,108 +541,254 @@ function deserialize(dataId, dataValue) {
             break;
         case '11':
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'POSITIONING_STATUS', value: getPositioningStatus(dataValue.substring(0, 2)), timestamp: collectTime},
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(2, 8)), timestamp: collectTime},
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(16, 20), 10) },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(20, 24)) },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(24, 26)) }
+            measurementArray = [{
+                    field: 'POSITIONING_STATUS',
+                    value: getPositioningStatus(dataValue.substring(0, 2)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(2, 8)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(16, 20), 10)
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(20, 24))
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(24, 26))
+                }
             ];
             break;
         case '1A':
             // TODO untested
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime},
-                { field: 'DEVICE_LOCATION', value: '(' + getSensorValue(dataValue.substring(24, 32), 1000000) + ',' + getSensorValue(dataValue.substring(16, 24), 1000000) + ')', timestamp: collectTime },
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(32, 36), 10) },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(36, 40)) },
-                { field: 'ACCELEROMETER_X', value: getSensorValue(dataValue.substring(40, 44)) },
-                { field: 'ACCELEROMETER_Y', value: getSensorValue(dataValue.substring(44, 48)) },
-                { field: 'ACCELEROMETER_Z', value: getSensorValue(dataValue.substring(48, 52)) },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(52, 54)) }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'DEVICE_LOCATION',
+                    value: '(' + getSensorValue(dataValue.substring(24, 32), 1000000) + ',' + getSensorValue(dataValue.substring(16, 24), 1000000) + ')',
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(32, 36), 10)
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(36, 40))
+                },
+                {
+                    field: 'ACCELEROMETER_X',
+                    value: getSensorValue(dataValue.substring(40, 44))
+                },
+                {
+                    field: 'ACCELEROMETER_Y',
+                    value: getSensorValue(dataValue.substring(44, 48))
+                },
+                {
+                    field: 'ACCELEROMETER_Z',
+                    value: getSensorValue(dataValue.substring(48, 52))
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(52, 54))
+                }
             ];
             break;
         case '1B':
             // TODO untested
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime},
-                { field: 'WIFI_SCAN', value: getMacAndRssiObj(dataValue.substring(16, 72)), timestamp: collectTime },
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(72, 76), 10) },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(76, 80)) },
-                { field: 'ACCELEROMETER_X', value: getSensorValue(dataValue.substring(80, 44)) },
-                { field: 'ACCELEROMETER_Y', value: getSensorValue(dataValue.substring(84, 88)) },
-                { field: 'ACCELEROMETER_Z', value: getSensorValue(dataValue.substring(88, 92)) },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(92, 94)) }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'WIFI_SCAN',
+                    value: getMacAndRssiObj(dataValue.substring(16, 72)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(72, 76), 10)
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(76, 80))
+                },
+                {
+                    field: 'ACCELEROMETER_X',
+                    value: getSensorValue(dataValue.substring(80, 44))
+                },
+                {
+                    field: 'ACCELEROMETER_Y',
+                    value: getSensorValue(dataValue.substring(84, 88))
+                },
+                {
+                    field: 'ACCELEROMETER_Z',
+                    value: getSensorValue(dataValue.substring(88, 92))
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(92, 94))
+                }
             ];
             break;
         case '1C':
             // TODO untested
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime},
-                { field: 'BLE_SCAN', value: getMacAndRssiObj(dataValue.substring(16, 58)), timestamp: collectTime },
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(58, 62), 10) },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(62, 66)) },
-                { field: 'ACCELEROMETER_X', value: getSensorValue(dataValue.substring(66, 70)) },
-                { field: 'ACCELEROMETER_Y', value: getSensorValue(dataValue.substring(70, 74)) },
-                { field: 'ACCELEROMETER_Z', value: getSensorValue(dataValue.substring(74, 78)) },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(78, 80)) }
+            measurementArray = [{
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(0, 6)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'BLE_SCAN',
+                    value: getMacAndRssiObj(dataValue.substring(16, 58)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(58, 62), 10)
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(62, 66))
+                },
+                {
+                    field: 'ACCELEROMETER_X',
+                    value: getSensorValue(dataValue.substring(66, 70))
+                },
+                {
+                    field: 'ACCELEROMETER_Y',
+                    value: getSensorValue(dataValue.substring(70, 74))
+                },
+                {
+                    field: 'ACCELEROMETER_Z',
+                    value: getSensorValue(dataValue.substring(74, 78))
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(78, 80))
+                }
             ];
             break;
         case '1D':
             // TODO untested
             // TODO SenseCAP_T1000_Helium_Decoder.js has some additional tests - are they needed?
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
-            measurementArray = [
-                { field: 'POSITIONING_STATUS', value: getPositioningStatus(dataValue.substring(0, 2)), timestamp: collectTime},
-                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(2, 8)), timestamp: collectTime},
-                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(16,20), 10) },
-                { field: 'LIGHT', value: getSensorValue(dataValue.substring(20,24)) },
-                { field: 'ACCELEROMETER_X', value: getSensorValue(dataValue.substring(24, 28)) },
-                { field: 'ACCELEROMETER_Y', value: getSensorValue(dataValue.substring(28,32)) },
-                { field: 'ACCELEROMETER_Z', value: getSensorValue(dataValue.substring(32,36)) },
-                { field: 'BATTERY', value: getBattery(dataValue.substring(36,38)) }
+            measurementArray = [{
+                    field: 'POSITIONING_STATUS',
+                    value: getPositioningStatus(dataValue.substring(0, 2)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'EVENT_STATUS',
+                    value: getEventStatus(dataValue.substring(2, 8)),
+                    timestamp: collectTime
+                },
+                {
+                    field: 'AIR_TEMPERATURE',
+                    value: getSensorValue(dataValue.substring(16, 20), 10)
+                },
+                {
+                    field: 'LIGHT',
+                    value: getSensorValue(dataValue.substring(20, 24))
+                },
+                {
+                    field: 'ACCELEROMETER_X',
+                    value: getSensorValue(dataValue.substring(24, 28))
+                },
+                {
+                    field: 'ACCELEROMETER_Y',
+                    value: getSensorValue(dataValue.substring(28, 32))
+                },
+                {
+                    field: 'ACCELEROMETER_Z',
+                    value: getSensorValue(dataValue.substring(32, 36))
+                },
+                {
+                    field: 'BATTERY',
+                    value: getBattery(dataValue.substring(36, 38))
+                }
             ];
             break;
     }
     return measurementArray;
 }
 
-function getPositioningStatus (str) {
+function getPositioningStatus(str) {
     var status = getInt(str)
     switch (status) {
         case 0:
-            return {id:status, statusName:"Positioning successful."}
+            return {
+                id: status, statusName: "Positioning successful."
+            }
         case 1:
-            return {id:status, statusName:"The GNSS scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The GNSS scan timed out and failed to obtain the location."
+            }
         case 2:
-            return {id:status, statusName:"The Wi-Fi scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The Wi-Fi scan timed out and failed to obtain the location."
+            }
         case 3:
-            return {id:status, statusName:"The Wi-Fi + GNSS scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The Wi-Fi + GNSS scan timed out and failed to obtain the location."
+            }
         case 4:
-            return {id:status, statusName:"The GNSS + Wi-Fi scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The GNSS + Wi-Fi scan timed out and failed to obtain the location."
+            }
         case 5:
-            return {id:status, statusName:"The Bluetooth scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The Bluetooth scan timed out and failed to obtain the location."
+            }
         case 6:
-            return {id:status, statusName:"The Bluetooth + Wi-Fi scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The Bluetooth + Wi-Fi scan timed out and failed to obtain the location."
+            }
         case 7:
-            return {id:status, statusName:"The Bluetooth + GNSS scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The Bluetooth + GNSS scan timed out and failed to obtain the location."
+            }
         case 8:
-            return {id:status, statusName:"The Bluetooth + Wi-Fi + GNSS scan timed out and failed to obtain the location."}
+            return {
+                id: status, statusName: "The Bluetooth + Wi-Fi + GNSS scan timed out and failed to obtain the location."
+            }
         case 9:
-            return {id:status, statusName:"Location Server failed to parse the GNSS location."}
+            return {
+                id: status, statusName: "Location Server failed to parse the GNSS location."
+            }
         case 10:
-            return {id:status, statusName:"Location Server failed to parse the Wi-Fi location."}
+            return {
+                id: status, statusName: "Location Server failed to parse the Wi-Fi location."
+            }
         case 11:
-            return {id:status, statusName:"Location Server failed to parse the Bluetooth location."}
+            return {
+                id: status, statusName: "Location Server failed to parse the Bluetooth location."
+            }
         case 12:
-            return {id:status, statusName:"Failed to parse the GNSS location due to the poor accuracy."}
+            return {
+                id: status, statusName: "Failed to parse the GNSS location due to the poor accuracy."
+            }
         case 13:
-            return {id:status, statusName:"Time synchronization failed."}
+            return {
+                id: status, statusName: "Time synchronization failed."
+            }
         case 14:
-            return {id:status, statusName:"Failed to obtain location due to the old Almanac."}
+            return {
+                id: status, statusName: "Failed to obtain location due to the old Almanac."
+            }
     }
     return getInt(str)
 }
@@ -509,95 +796,132 @@ function getPositioningStatus (str) {
 
 function getUpShortInfo(messageValue) {
     return [{
-        field: 'BATTERY', value: getBattery(messageValue.substring(0, 2))
+        field: 'BATTERY',
+        value: getBattery(messageValue.substring(0, 2))
     }, {
-        field: 'FIRMWARE_VERSION', value: getSoftVersion(messageValue.substring(2, 6))
+        field: 'FIRMWARE_VERSION',
+        value: getSoftVersion(messageValue.substring(2, 6))
     }, {
-        field: 'HARDWARE_VERSION', value: getHardVersion(messageValue.substring(6, 10))
+        field: 'HARDWARE_VERSION',
+        value: getHardVersion(messageValue.substring(6, 10))
     }, {
-        field: 'WORK_MODE', value: getWorkingMode(messageValue.substring(10,12))
+        field: 'WORK_MODE',
+        value: getWorkingMode(messageValue.substring(10, 12))
     }, {
-        field: 'POSITION_STRATEGY', value: getPositioningStrategy(messageValue.substring(12,14))
+        field: 'POSITION_STRATEGY',
+        value: getPositioningStrategy(messageValue.substring(12, 14))
     }, {
-        field: 'HEARTBEAT_INTERVAL', value: getMinsByMin(messageValue.substring(14, 18))
+        field: 'HEARTBEAT_INTERVAL',
+        value: getMinsByMin(messageValue.substring(14, 18))
     }, {
-        field: 'PERIODIC_INTERVAL', value: getMinsByMin(messageValue.substring(18,22))
+        field: 'PERIODIC_INTERVAL',
+        value: getMinsByMin(messageValue.substring(18, 22))
     }, {
-        field: 'EVENT_INTERVAL', value: getMinsByMin(messageValue.substring(22,26))
+        field: 'EVENT_INTERVAL',
+        value: getMinsByMin(messageValue.substring(22, 26))
     }, {
-        field: 'SENSOR_ENABLE', value: getInt(messageValue.substring(26,28))
-    }, {    
-        field: 'SOS_MODE', value: getSOSMode(messageValue.substring(28,30))
+        field: 'SENSOR_ENABLE',
+        value: getInt(messageValue.substring(26, 28))
+    }, {
+        field: 'SOS_MODE',
+        value: getSOSMode(messageValue.substring(28, 30))
     }];
 }
+
 function getMotionSetting(messageValue) {
     return [{
-        field: 'MOTION_ENABLE', value: getInt(messageValue.substring(0, 2))
+        field: 'MOTION_ENABLE',
+        value: getInt(messageValue.substring(0, 2))
     }, {
-        field: 'ANY_MOTION_THRESHOLD', value: getSensorValue(messageValue.substring(2, 6), 1)
+        field: 'ANY_MOTION_THRESHOLD',
+        value: getSensorValue(messageValue.substring(2, 6), 1)
     }, {
-        field: 'MOTION_START_INTERVAL', value: getMinsByMin(messageValue.substring(6, 10))
+        field: 'MOTION_START_INTERVAL',
+        value: getMinsByMin(messageValue.substring(6, 10))
     }];
 }
-function getStaticSetting (messageValue) {
+
+function getStaticSetting(messageValue) {
     return [{
-        field: 'STATIC_ENABLE', value: getInt(messageValue.substring(0, 2))
+        field: 'STATIC_ENABLE',
+        value: getInt(messageValue.substring(0, 2))
     }, {
-        field: 'DEVICE_STATIC_TIMEOUT', value: getMinsByMin(messageValue.substring(2,6))
+        field: 'DEVICE_STATIC_TIMEOUT',
+        value: getMinsByMin(messageValue.substring(2, 6))
     }];
 }
-function getShockSetting (messageValue) {
+
+function getShockSetting(messageValue) {
     return [{
-        field: 'SHOCK_ENABLE', value: getInt(messageValue.substring(0, 2))
+        field: 'SHOCK_ENABLE',
+        value: getInt(messageValue.substring(0, 2))
     }, {
-        field: 'SHOCK_THRESHOLD', value: getInt(messageValue.substring(2,6))
+        field: 'SHOCK_THRESHOLD',
+        value: getInt(messageValue.substring(2, 6))
     }];
 }
-function getTempSetting (messageValue) {
+
+function getTempSetting(messageValue) {
     return [{
-        field: 'TEMP_ENABLE', value: getInt(messageValue.substring(0, 2))
+        field: 'TEMP_ENABLE',
+        value: getInt(messageValue.substring(0, 2))
     }, {
-        field: 'EVENT_TEMP_INTERVAL', value: getMinsByMin(messageValue.substring(2,6))
+        field: 'EVENT_TEMP_INTERVAL',
+        value: getMinsByMin(messageValue.substring(2, 6))
     }, {
-        field: 'EVENT_TEMP_SAMPLE_INTERVAL', value: getSecondsByInt(messageValue.substring(6,10))
+        field: 'EVENT_TEMP_SAMPLE_INTERVAL',
+        value: getSecondsByInt(messageValue.substring(6, 10))
     }, {
-        field: 'TEMP_THMAX', value: getSensorValue(messageValue.substring(10, 14), 10)
+        field: 'TEMP_THMAX',
+        value: getSensorValue(messageValue.substring(10, 14), 10)
     }, {
-        field: 'TEMP_THMIN', value: getSensorValue(messageValue.substring(14, 18), 10)
+        field: 'TEMP_THMIN',
+        value: getSensorValue(messageValue.substring(14, 18), 10)
     }, {
-        field: 'TEMP_WARNING_TYPE', value: getInt(messageValue.substring(18,29))
+        field: 'TEMP_WARNING_TYPE',
+        value: getInt(messageValue.substring(18, 29))
     }];
 }
-function getLightSetting (messageValue) {
+
+function getLightSetting(messageValue) {
     return [{
-        field: 'LIGHT_ENABLE', value: getInt(messageValue.substring(0, 2))
+        field: 'LIGHT_ENABLE',
+        value: getInt(messageValue.substring(0, 2))
     }, {
-        field: 'EVENT_LIGHT_INTERVAL', value: getMinsByMin(messageValue.substring(2,6))
+        field: 'EVENT_LIGHT_INTERVAL',
+        value: getMinsByMin(messageValue.substring(2, 6))
     }, {
-        field: 'EVENT_LIGHT_SAMPLE_INTERVAL', value: getSecondsByInt(messageValue.substring(6,10))
+        field: 'EVENT_LIGHT_SAMPLE_INTERVAL',
+        value: getSecondsByInt(messageValue.substring(6, 10))
     }, {
-        field: 'LIGHT_THMAX', value: getSensorValue(messageValue.substring(10, 14), 10)
+        field: 'LIGHT_THMAX',
+        value: getSensorValue(messageValue.substring(10, 14), 10)
     }, {
-        field: 'LIGHT_THMIN', value: getSensorValue(messageValue.substring(14, 18), 10)
+        field: 'LIGHT_THMIN',
+        value: getSensorValue(messageValue.substring(14, 18), 10)
     }, {
-        field: 'LIGHT_WARNING_TYPE', value: getInt(messageValue.substring(18,29))
+        field: 'LIGHT_WARNING_TYPE',
+        value: getInt(messageValue.substring(18, 29))
     }];
 }
+
 function getBattery(batteryStr) {
     return loraWANV2DataFormat(batteryStr);
 }
+
 function getSoftVersion(softVersion) {
     return loraWANV2DataFormat(softVersion.substring(0, 2)) + '.' + loraWANV2DataFormat(softVersion.substring(2, 4));
 }
+
 function getHardVersion(hardVersion) {
     return loraWANV2DataFormat(hardVersion.substring(0, 2)) + '.' + loraWANV2DataFormat(hardVersion.substring(2, 4));
 }
 
-function getPositioningStrategy (strategy) {
+function getPositioningStrategy(strategy) {
     return getInt(strategy)
 }
 
-function getUTCTimestamp(str){
+function getUTCTimestamp(str) {
     //return parseInt(loraWANV2PositiveDataFormat(str)) * 1000
     return parseInt(loraWANV2PositiveDataFormat(str))
     //return parseFloat(loraWANV2PositiveDataFormat(str).toFixed(3));
@@ -610,22 +934,25 @@ function loraWANV2PositiveDataFormat(str, divisor) {
     return parseInt(str2, 2) / divisor;
 }
 
-function getWorkingMode (workingMode) {
+function getWorkingMode(workingMode) {
     return getInt(workingMode)
 }
 
-function getSOSMode (str) {
+function getSOSMode(str) {
     return loraWANV2DataFormat(str)
 }
 
-function getMacAndRssiObj (pair) {
+function getMacAndRssiObj(pair) {
     var pairs = []
     if (pair.length % 14 === 0) {
         for (var i = 0; i < pair.length; i += 14) {
             var mac = getMacAddress(pair.substring(i, i + 12))
             if (mac) {
                 var rssi = getInt8RSSI(pair.substring(i + 12, i + 14))
-                pairs.push({mac: mac, rssi: rssi})
+                pairs.push({
+                    mac: mac,
+                    rssi: rssi
+                })
             } else {
                 continue
             }
@@ -634,7 +961,7 @@ function getMacAndRssiObj (pair) {
     return pairs
 }
 
-function getMacAddress (str) {
+function getMacAddress(str) {
     if (str.toLowerCase() === 'ffffffffffff') {
         return null
     }
@@ -662,15 +989,15 @@ function getSensorValue(str, dig) {
     }
 }
 
-function getSecondsByInt (str) {
+function getSecondsByInt(str) {
     return getInt(str)
 }
 
-function getMinsByMin (str) {
+function getMinsByMin(str) {
     return getInt(str)
 }
 
-function getSensorValue (str, dig) {
+function getSensorValue(str, dig) {
     if (str === '8000') {
         return null
     } else {
@@ -678,15 +1005,15 @@ function getSensorValue (str, dig) {
     }
 }
 
-function getInt8RSSI (str) {
+function getInt8RSSI(str) {
     return loraWANV2DataFormat(str)
 }
 
-function getInt (str) {
+function getInt(str) {
     return parseInt(str, 16)
 }
 
-function getByteArray (str) {
+function getByteArray(str) {
     var bytes = []
     for (var i = 0; i < str.length; i += 2) {
         bytes.push(str.substring(i, i + 2))
@@ -694,7 +1021,7 @@ function getByteArray (str) {
     return toBinary(bytes)
 }
 
-function getEventStatus (str) {
+function getEventStatus(str) {
     // return getInt(str)
     var bitStr = getByteArray(str)
     var bitArr = []
@@ -707,31 +1034,54 @@ function getEventStatus (str) {
         if (bitArr[i] !== '1') {
             continue
         }
-        switch (i){
+        switch (i) {
             case 0:
-                event.push({id:1, eventName:"Start moving event."})
+                event.push({
+                    id: 1,
+                    eventName: "Start moving event."
+                })
                 break
             case 1:
-                event.push({id:2, eventName:"End movement event."})
+                event.push({
+                    id: 2,
+                    eventName: "End movement event."
+                })
                 break
             case 2:
-                event.push({id:3, eventName:"Motionless event."})
+                event.push({
+                    id: 3,
+                    eventName: "Motionless event."
+                })
                 break
             case 3:
-                event.push({id:4, eventName:"Shock event."})
+                event.push({
+                    id: 4,
+                    eventName: "Shock event."
+                })
                 break
             case 4:
-                event.push({id:5, eventName:"Temperature event."})
+                event.push({
+                    id: 5,
+                    eventName: "Temperature event."
+                })
                 break
             case 5:
-                event.push({id:6, eventName:"Light event."})
+                event.push({
+                    id: 6,
+                    eventName: "Light event."
+                })
                 break
             case 6:
-                event.push({id:7, eventName:"SOS event."})
-                sosevent = true
+                event.push({
+                    id: 7,
+                    eventName: "SOS event."
+                })
                 break
             case 7:
-                event.push({id:8, eventName:"Press once event."})
+                event.push({
+                    id: 8,
+                    eventName: "Press once event."
+                })
                 break
         }
     }
@@ -755,6 +1105,7 @@ function bytes2HexString(arrBytes) {
     }
     return str;
 }
+
 function loraWANV2DataFormat(str) {
     var divisor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
 
@@ -762,7 +1113,7 @@ function loraWANV2DataFormat(str) {
     var str2 = toBinary(strReverse);
     if (str2.substring(0, 1) === '1') {
         var arr = str2.split('');
-        var reverseArr = arr.map(function (item) {
+        var reverseArr = arr.map(function(item) {
             if (parseInt(item) === 1) {
                 return 0;
             } else {
@@ -784,7 +1135,7 @@ function bigEndianTransform(data) {
 }
 
 function toBinary(arr) {
-    var binaryData = arr.map(function (item) {
+    var binaryData = arr.map(function(item) {
         var data = parseInt(item, 16).toString(2);
         var dataLength = data.length;
         if (data.length !== 8) {
