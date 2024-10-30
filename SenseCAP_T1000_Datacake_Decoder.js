@@ -1,5 +1,5 @@
-// Version 20241029-04
-// WORK IN PROGRESS
+// Version 20241030-01
+// Adapted from Datacake default, with some inspiration from SenseCAP_T1000_Helium_Decoder.js
 // By M. Davids
 function Decoder(bytes, port) {
 
@@ -14,7 +14,8 @@ function Decoder(bytes, port) {
     var measurement = messageAnalyzed(bytesString);
     datacakeFields = measurement;
 
-    // Get TDOA GeoLocation from Metadata - probable very KPN specific
+    // Get TDOA GeoLocation from Metadata - probable very KPN Things specific
+    // Tailored for KPN Decoder: Raw LoRa payload Extended (v2)
     var lon = null;
     var lat = null;
     var loctime = null;
@@ -47,10 +48,10 @@ function Decoder(bytes, port) {
             console.log("rawPayload not available.");
     }
 
+    // TODO fport check(s)? See SenseCAP_T1000_Helium_Decoder.js
+
     return datacakeFields;
 }
-
-// TODO port check(s)? Zie bronversie
 
 function messageAnalyzed(messageValue) {
     try {
@@ -193,7 +194,7 @@ function unpack(messageValue) {
                     'dataId': dataId, 'dataValue': dataValue
                 };
                 break;
-                        case '1A':
+            case '1A':
                 dataValue = remainMessage.substring(2, 56)
                 messageValue = remainMessage.substring(56)
                 dataObj = {
@@ -236,12 +237,10 @@ function unpack(messageValue) {
 function deserialize(dataId, dataValue) {
     var measurementArray = [];
     var collectTime = 0
-    // TODO zijn we zo compleet met de var's?
+    // TODO SenseCAP_T1000_Helium_Decoder.js has some more variables, do we want them?
     switch (dataId) {
         case '01':
             measurementArray = getUpShortInfo(dataValue);
-            //[COMMENT] ES6 needed for this: measurementArray.push(...getMotionSetting(dataValue.substring(30, 40)));
-            //          Fixed by adding 'apply'
             measurementArray.push.apply(measurementArray, getMotionSetting(dataValue.substring(30, 40)));
             measurementArray.push.apply(measurementArray, getStaticSetting(dataValue.substring(40, 46)));
             measurementArray.push.apply(measurementArray, getShockSetting(dataValue.substring(46, 52)));
@@ -293,9 +292,8 @@ function deserialize(dataId, dataValue) {
             ];
             break;
         case '06':
-            // TODO werkt, maar de bronversie die we hebben gebruikt doet het iets uitgebreider. <-- inmiddels hier ook uitgebreid.
-            // TODO bronversie heeft parseFloat - willen we dat?
-            // TODO willen/kunnen we MotionID nog tovoegen? Zie bron. Geldt ook voor 07 en 08.
+            // TODO SenseCAP_T1000_Helium_Decoder.js has parseFloat - do we want that here too?
+            // TODO What about adding MotionID, yes or no ? Also applies to 07 .. 0B
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
             measurementArray = [
                 { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(0, 6)), timestamp: collectTime },
@@ -354,10 +352,10 @@ function deserialize(dataId, dataValue) {
             ];
             break;
         case '0C':
-                // NO TODO (not present in bronversie)
+                // WONTDO Also not present in SenseCAP_T1000_Helium_Decoder.js
             break;
         case '0D':
-            // TODO Willen we hier nog wat meer mee?
+            // TODO What to do with this?
             var errorCode = getInt(dataValue);
             var error = '';
             switch (errorCode) {
@@ -374,13 +372,13 @@ function deserialize(dataId, dataValue) {
             measurementArray.push({ errorCode: errorCode, error: error });
             break;
         case '0E':
-            // TODO
+            // TODO ?
             break;
         case '0F':
-            // TODO
+            // TODO ?
             break;
         case '10':
-            // TODO
+            // TODO ?
             break;
         case '11':
             collectTime = getUTCTimestamp(dataValue.substring(8, 16));
@@ -435,7 +433,19 @@ function deserialize(dataId, dataValue) {
             ];
             break;
         case '1D':
-            // TODO
+            // TODO untested
+            // TODO SenseCAP_T1000_Helium_Decoder.js has some additional tests - are they needed?
+            collectTime = getUTCTimestamp(dataValue.substring(8, 16));
+            measurementArray = [
+                { field: 'POSITIONING_STATUS', value: getPositioningStatus(dataValue.substring(0, 2)), timestamp: collectTime},
+                { field: 'EVENT_STATUS', value: getEventStatus(dataValue.substring(2, 8)), timestamp: collectTime},
+                { field: 'AIR_TEMPERATURE', value: getSensorValue(dataValue.substring(16,20), 10) },
+                { field: 'LIGHT', value: getSensorValue(dataValue.substring(20,24)) },
+                { field: 'ACCELEROMETER_X', value: getSensorValue(dataValue.substring(24, 28)) },
+                { field: 'ACCELEROMETER_Y', value: getSensorValue(dataValue.substring(28,32)) },
+                { field: 'ACCELEROMETER_Z', value: getSensorValue(dataValue.substring(32,36)) },
+                { field: 'BATTERY', value: getBattery(dataValue.substring(36,38)) }
+            ];
             break;
     }
     return measurementArray;
@@ -563,11 +573,6 @@ function getSoftVersion(softVersion) {
 }
 function getHardVersion(hardVersion) {
     return loraWANV2DataFormat(hardVersion.substring(0, 2)) + '.' + loraWANV2DataFormat(hardVersion.substring(2, 4));
-}
-
-// TODO kanweg?
-function getOneWeekInterval(str) {
-    return loraWANV2DataFormat(str);
 }
 
 function getPositioningStrategy (strategy) {
